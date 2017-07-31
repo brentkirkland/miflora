@@ -65,7 +65,7 @@ def postData(readings):
     url = "https://us-central1-slurp-165217.cloudfunctions.net/pubEndpoint?topic=processScans"
     headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
     r = requests.post(url, data=json.dumps(payload), headers=headers)
-    print r.status_code
+    print(r.status_code)
 
 
 def grabNewData(pollers):
