@@ -16,7 +16,7 @@ def postData (poller):
 def fetchData():
     # this will be used to find all devices
     print("Getting devices")
-    return ["C4:7C:8D:60:8F:E6"]
+    return ["C4:7C:8D:62:95:03"]
 
 def main():
     pollers = []
