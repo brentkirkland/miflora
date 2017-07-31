@@ -47,7 +47,8 @@ def getPollers(macs):
     return pollers
 
 def postData(readings):
-
+    
+    sumTemp = 0
     for r in readings:
         sumTemp += r["temperature"]
     avgTemp = sumTemp / len(readings)
