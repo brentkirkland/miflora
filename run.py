@@ -1,17 +1,36 @@
 from miflora.miflora_poller import MiFloraPoller, \
     MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY
 import time
-import threading
 
 def postData (poller):
     print("Getting data from Mi Flora")
-    print("FW: {}".format(poller.firmware_version()))
-    print("Name: {}".format(poller.name()))
-    print("Temperature: {}".format(poller.parameter_value("temperature")))
-    print("Moisture: {}".format(poller.parameter_value(MI_MOISTURE)))
-    print("Light: {}".format(poller.parameter_value(MI_LIGHT)))
-    print("Conductivity: {}".format(poller.parameter_value(MI_CONDUCTIVITY)))
-    print("Battery: {}".format(poller.parameter_value(MI_BATTERY)))
+
+    fw = poller.firmware_version()
+    name = poller.name()
+    temperature = poller.parameter_value(MI_TEMPERATURE)
+    moisture = poller.parameter_value(MI_MOISTURE)
+    light = poller.parameter_value(MI_LIGHT)
+    conductivity = poller.parameter_value(MI_CONDUCTIVITY)
+    battery = poller.parameter_value(MI_BATTERY)
+
+    print("FW: {}".format(fw))
+    print("Name: {}".format(name))
+    print("Temperature: {}".format(temperature))
+    print("Moisture: {}".format(moisture))
+    print("Light: {}".format(light))
+    print("Conductivity: {}".format(conductivity))
+    print("Battery: {}".format(battery))
+
+    url = "http://localhost:8080"
+    data = {'fw': fw,
+        'name': name,
+        'temperature': temperature,
+        'moisture': moisture,
+        'light': light,
+        'conductivity': conductivity,
+        'battery': battery }
+    headers = {'Content-type': 'application/json'}
+    # r = requests.post(url, data=json.dumps(data), headers=headers)
 
 def getMacs():
     # will implement call to scan for all devices
