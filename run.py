@@ -26,6 +26,7 @@ def main():
         poller = postData(MiFloraPoller(x))
         pollers.append(poller)
     while True:
+        print(len(pollers))
         for p in pollers:
             postData(p)
         time.sleep(600)
