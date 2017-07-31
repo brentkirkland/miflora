@@ -2,6 +2,7 @@ from miflora.miflora_poller import MiFloraPoller, \
     MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY, MI_MAC
 import time
 import requests
+import simplejson as json
 
 def scanDevices (poller):
     print("Getting data from Mi Flora")
