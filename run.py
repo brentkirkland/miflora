@@ -13,23 +13,33 @@ def postData (poller):
     print("Conductivity: {}".format(poller.parameter_value(MI_CONDUCTIVITY)))
     print("Battery: {}".format(poller.parameter_value(MI_BATTERY)))
 
-def fetchData():
-    # this will be used to find all devices
-    print("Getting devices")
+def getMacs():
+    # will implement call to scan for all devices
+    print("Getting macs")
     return ["C4:7C:8D:62:95:03"]
+
+def getPollers(macs):
+    print("Getting pollers")
+    pollers []
+    for x in fetched_data:
+        print(x)
+        poller = MiFloraPoller(x)
+        pollers.append(poller)
+    return pollers
+
+def grabNewData(pollers):
+    while True:
+        for p in pollers:
+            postData(p)
+        print("\nSleeping\n")
+        time.sleep(600)
 
 def main():
     pollers = []
-    fetched_data = fetchData()
-    for x in fetched_data:
-        print(x)
-        poller = postData(MiFloraPoller(x))
-        pollers.append(poller)
-    while True:
-        print(len(pollers))
-        for p in pollers:
-            postData(p)
-        time.sleep(600)
+    macs = getMacs()
+    pollers = getPollers(macs)
+    grabNewData(pollers)
+
 
 if __name__ == "__main__":
     main()
