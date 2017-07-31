@@ -22,6 +22,7 @@ def main():
     pollers = []
     fetched_data = fetchData()
     for x in fetched_data:
+        print x
         poller = postData(MiFloraPoller(x))
         pollers.append(poller)
     while True:
