@@ -21,8 +21,7 @@ def getMacs():
 def getPollers(macs):
     print("Getting pollers")
     pollers = []
-    for x in fetched_data:
-        print(x)
+    for x in macs:
         poller = MiFloraPoller(x)
         pollers.append(poller)
     return pollers
