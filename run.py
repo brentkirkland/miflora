@@ -1,12 +1,13 @@
 from miflora.miflora_poller import MiFloraPoller, \
-    MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY
+    MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY, MI_MAC
 import time
+import requests
 
-def postData (poller):
+def scanDevices (poller):
     print("Getting data from Mi Flora")
 
     fw = poller.firmware_version()
-    name = poller.name()
+    mac = poller.parameter_value(MI_MAC)
     temperature = poller.parameter_value(MI_TEMPERATURE)
     moisture = poller.parameter_value(MI_MOISTURE)
     light = poller.parameter_value(MI_LIGHT)
@@ -14,23 +15,23 @@ def postData (poller):
     battery = poller.parameter_value(MI_BATTERY)
 
     print("FW: {}".format(fw))
-    print("Name: {}".format(name))
+    print("Mac: {}".format(mac))
     print("Temperature: {}".format(temperature))
     print("Moisture: {}".format(moisture))
     print("Light: {}".format(light))
     print("Conductivity: {}".format(conductivity))
     print("Battery: {}".format(battery))
 
-    url = "http://localhost:8080"
+
     data = {'fw': fw,
-        'name': name,
+        'mac': mac,
         'temperature': temperature,
         'moisture': moisture,
         'light': light,
         'conductivity': conductivity,
         'battery': battery }
-    headers = {'Content-type': 'application/json'}
-    # r = requests.post(url, data=json.dumps(data), headers=headers)
+
+    return data
 
 def getMacs():
     # will implement call to scan for all devices
@@ -45,11 +46,34 @@ def getPollers(macs):
         pollers.append(poller)
     return pollers
 
+def postData(readings):
+
+    for r in readings:
+        sumTemp += r["temperature"]
+    avgTemp = sumTemp / len(readings)
+
+    payload = {
+        'readings': readings,
+        'avgTemp': avgTemp,
+        'timestamp': time.time(),
+        'room_id': 'test_garage',
+    }
+
+    print(payload)
+
+    # url = "https://us-central1-slurp-165217.cloudfunctions.net/pubEndpoint?topic=processScan"
+    # headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+    # r = requests.post(url, data=json.dumps(data), headers=headers)
+    # print r.status_code
+
+
 def grabNewData(pollers):
     while True:
+        readings = []
         for p in pollers:
-            postData(p)
+            readings.append(scanDevices(p))
         print("\nSleeping\n")
+        postData(readings)
         time.sleep(600)
 
 def main():

@@ -22,6 +22,7 @@ MI_LIGHT = "light"
 MI_MOISTURE = "moisture"
 MI_CONDUCTIVITY = "conductivity"
 MI_BATTERY = "battery"
+MI_MAC = "mac"
 
 LOGGER = logging.getLogger(__name__)
 
@@ -236,6 +237,9 @@ class MiFloraPoller(object):
         expired.
         This behaviour can be overwritten by the "read_cached" parameter.
         """
+
+        if parameter == MI_MAC:
+            return self.mac
 
         # Special handling for battery attribute
         if parameter == MI_BATTERY:
