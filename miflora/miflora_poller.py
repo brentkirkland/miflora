@@ -239,7 +239,7 @@ class MiFloraPoller(object):
         """
 
         if parameter == MI_MAC:
-            return self.mac
+            return self._mac
 
         # Special handling for battery attribute
         if parameter == MI_BATTERY:
