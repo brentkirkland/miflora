@@ -47,7 +47,7 @@ def getPollers(macs):
     return pollers
 
 def postData(readings):
-    
+
     sumTemp = 0
     for r in readings:
         sumTemp += r["temperature"]
@@ -62,10 +62,10 @@ def postData(readings):
 
     print(payload)
 
-    # url = "https://us-central1-slurp-165217.cloudfunctions.net/pubEndpoint?topic=processScan"
-    # headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
-    # r = requests.post(url, data=json.dumps(data), headers=headers)
-    # print r.status_code
+    url = "https://us-central1-slurp-165217.cloudfunctions.net/pubEndpoint?topic=processScans"
+    headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+    r = requests.post(url, data=json.dumps(payload), headers=headers)
+    print r.status_code
 
 
 def grabNewData(pollers):
@@ -73,8 +73,8 @@ def grabNewData(pollers):
         readings = []
         for p in pollers:
             readings.append(scanDevices(p))
-        print("\nSleeping\n")
         postData(readings)
+        print("\nSleeping\n")
         time.sleep(600)
 
 def main():
