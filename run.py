@@ -20,7 +20,7 @@ def getMacs():
 
 def getPollers(macs):
     print("Getting pollers")
-    pollers []
+    pollers = []
     for x in fetched_data:
         print(x)
         poller = MiFloraPoller(x)
@@ -35,7 +35,6 @@ def grabNewData(pollers):
         time.sleep(600)
 
 def main():
-    pollers = []
     macs = getMacs()
     pollers = getPollers(macs)
     grabNewData(pollers)
