@@ -4,7 +4,7 @@ import time
 import requests
 import simplejson as json
 
-def scanDevices (poller, mac):
+def scanDevices (poller, macObj):
     print("Getting data from Mi Flora")
 
     fw = poller.firmware_version()
@@ -22,15 +22,15 @@ def scanDevices (poller, mac):
     print("Light: {}".format(light))
     print("Conductivity: {}".format(conductivity))
     print("Battery: {}".format(battery))
-    print(mac)
+
     data = {'fw': fw,
         'mac': mac,
         'temp': temperature,
         'moist': moisture,
         'light': light,
-        'room': mac['room'],
-        'valve': mac['valve'],
-        'tray': mac['tray'],
+        'room': macObj['room'],
+        'valve': macObj['valve'],
+        'tray': macObj['tray'],
         'fert': conductivity,
         'battery': battery }
     print('sending')
