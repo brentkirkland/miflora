@@ -22,7 +22,7 @@ def scanDevices (poller, mac):
     print("Light: {}".format(light))
     print("Conductivity: {}".format(conductivity))
     print("Battery: {}".format(battery))
-
+    print(mac)
     data = {'fw': fw,
         'mac': mac,
         'temp': temperature,
