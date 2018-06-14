@@ -23,65 +23,167 @@ def scanDevices (poller):
     print("Conductivity: {}".format(conductivity))
     print("Battery: {}".format(battery))
 
-
     data = {'fw': fw,
         'mac': mac,
-        'temperature': temperature,
-        'moisture': moisture,
+        'temp': temperature,
+        'moist': moisture,
         'light': light,
-        'conductivity': conductivity,
+        'fert': conductivity,
         'battery': battery }
-
-    return data
-
-def getMacs():
-    # will implement call to scan for all devices
-    print("Getting macs")
-    return ["C4:7C:8D:62:95:03"]
-
-def getPollers(macs):
-    print("Getting pollers")
-    pollers = []
-    for x in macs:
-        poller = MiFloraPoller(x)
-        pollers.append(poller)
-    return pollers
-
-def postData(readings):
-
-    sumTemp = 0
-    for r in readings:
-        sumTemp += r["temperature"]
-    avgTemp = sumTemp / len(readings)
-
-    payload = {
-        'readings': readings,
-        'avgTemp': avgTemp,
-        'timestamp': time.time(),
-        'room_id': 'test_garage',
-    }
-
-    print(payload)
-
-    url = "https://us-central1-slurp-165217.cloudfunctions.net/pubEndpoint?topic=processScans"
+    print('sending')
+    url = "https://us-central1-soilwatch-206306.cloudfunctions.net/uploadData"
     headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
     r = requests.post(url, data=json.dumps(payload), headers=headers)
     print(r.status_code)
 
 
-def grabNewData(pollers):
+def getMacs():
+    # will implement call to scan for all devices
+    print("Getting macs")
+    return [
+      {
+        'mac': 'c4:7c:8d:62:b2:9c',
+        'name': 'first',
+        'valve': 1,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:62:14:64',
+        'name': 'unmarked',
+        'valve': 1,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:61:9e:ec',
+        'name': 'bob',
+        'valve': 2,
+        'tray': 1,
+      },
+      {
+        'mac': 'c4:7c:8d:61:9f:1c',
+        'name': 'ryan',
+        'valve': 2,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:61:8b:9a',
+        'name': 'susan',
+        'valve': 3,
+        'tray': 1,
+      },
+      {
+        'mac': 'c4:7c:8d:61:9e:e4',
+        'name': 'reba',
+        'valve': 3,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:61:9f:22',
+        'name': 'chang',
+        'valve': 4,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:61:ff:78',
+        'name': 'cow',
+        'valve': 4,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:62:74:fd',
+        'name': 'rogo',
+        'valve': 5,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:62:10:85',
+        'name': 'deko',
+        'valve': 5,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:61:9e:b7',
+        'name': 'peggy',
+        'valve': 6,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:61:8c:0a',
+        'name': 'ted',
+        'valve': 6,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:61:ff:f1',
+        'name': 'daphni',
+        'valve': 7,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:62:75:45',
+        'name': 'shiga',
+        'valve': 7,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:62:3e:8f',
+        'name': 'roco',
+        'valve': 8,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:61:9e:d1',
+        'name': 'rico',
+        'valve': 8,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:61:9e:bc',
+        'name': 'treddy',
+        'valve': 9,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:62:3e:78',
+        'name': 'rod',
+        'valve': 9,
+        'tray': 2
+      },
+      {
+        'mac': 'c4:7c:8d:62:3e:f4',
+        'name': 'treddy',
+        'valve': 10,
+        'tray': 1
+      },
+      {
+        'mac': 'c4:7c:8d:62:75:7f',
+        'name': 'treddy',
+        'valve': 10,
+        'tray': 2
+      },
+    ];
+
+def getPollers(macs):
+    print("Getting pollers")
+    pollers = []
+    for x in macs:
+        mac = x["mac"]
+        poller = MiFloraPoller(mac)
+        pollers.append(poller)
+    return pollers
+
+def grabNewData(pollers, macs):
     while True:
-        readings = []
         for p in pollers:
-            readings.append(scanDevices(p))
-        postData(readings)
+            scanDevices(p)
         print("\nSleeping\n")
-        time.sleep(600)
+        time.sleep(3000)
 
 def main():
     macs = getMacs()
+    print(macs)
     pollers = getPollers(macs)
-    grabNewData(pollers)
+    grabNewData(pollers, macs)
 
 
 if __name__ == "__main__":
