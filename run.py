@@ -36,7 +36,7 @@ def scanDevices (poller, mac):
     print('sending')
     url = "https://us-central1-soilwatch-206306.cloudfunctions.net/uploadData"
     headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
-    r = requests.post(url, data=json.dumps(payload), headers=headers)
+    r = requests.post(url, data=json.dumps(data), headers=headers)
     print(r.status_code)
 
 
