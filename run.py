@@ -29,8 +29,8 @@ def scanDevices (poller, mac):
         'moist': moisture,
         'light': light,
         'room': mac['room'],
-        'valve': mac['valve']
-        'tray': mac['tray']
+        'valve': mac['valve'],
+        'tray': mac['tray'],
         'fert': conductivity,
         'battery': battery }
     print('sending')
